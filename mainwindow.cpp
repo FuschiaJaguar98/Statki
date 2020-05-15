@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     Plansza planszaGraczaJeden(ui->plansza1, ui->plansza1grid);
+    Statek statek(1,1,Kierunek::prawo,3);
+    planszaGraczaJeden.dodajStatek(&statek);
 }
 
 MainWindow::~MainWindow()
