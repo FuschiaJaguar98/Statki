@@ -32,18 +32,27 @@ public:
 class Plansza{
 
 private:
-    const int ROZMIAR_PLANSZY = 500;
-    const int SZEROKOSC_PLANSZY = 10;
-    const int ROZMIAR_PRZYCISKU = ROZMIAR_PLANSZY/SZEROKOSC_PLANSZY;
+    static const int ROZMIAR_PLANSZY = 500;        //każda plansza ma takie pole
+    static const int SZEROKOSC_PLANSZY = 10;       //static jako część planszy, nie przypisana do obiektu, jedna zmeinna wspólna dla wszystkich obiektów
+    static const int ROZMIAR_PRZYCISKU = ROZMIAR_PLANSZY/SZEROKOSC_PLANSZY;
+
     PrzyciskPlanszy* przyciski [10][10]; //tworzenie planszy dla jednego gracza
     QWidget* widget;
     QGridLayout* layout;
-    void ustawZajeteWokol(int pozycja_x,int pozycja_y);
-public:
-    void stworzPrzyciski();
-    Plansza(QWidget* widget, QGridLayout* layout);  //konstruktor
-    void dodajStatek(Statek* nowyStatek);
 
+    void stworzPrzyciski();
+    void ustawZajeteWokol(int pozycja_x,int pozycja_y);
+
+public:
+    static const int LICZBA_CZTEROMASZTOWCOW = 1;
+    static const int LICZBA_TRZYMASZTOWCOW = 2;
+    static const int LICZBA_DWUMASZTOWCOW = 3;
+    static const int LICZBA_JEDNOMASZTOWCOW = 4;
+
+    Plansza(QWidget* widget, QGridLayout* layout);  //konstruktor
+                                        //zapobiega wyciekowi pamięci
+    void dodajStatek(Statek* nowyStatek);
+    bool sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierunek kierunek, int maszty);
 
 };
 

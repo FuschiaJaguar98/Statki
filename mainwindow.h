@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <Plansza.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +16,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
+    Plansza *planszaGraczaJeden;
+    int liczbaStatkow;
     Ui::MainWindow *ui;
+    void ustawStatekGracza(int liczbaMasztow);
+
 };
 #endif // MAINWINDOW_H

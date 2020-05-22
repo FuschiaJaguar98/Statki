@@ -22,7 +22,7 @@ private:
 class Statek {
 public:
     Statek(int wspolrzedna_x, int wspolrzedna_y, Kierunek kierunek, int maszty =1);
-    int getMaszty();
+    int getMaszty();        //metoda zwykła zwraca dla każdego obiektu ilość tych masztów jakie przyjmujemy, zwraca coś innego (metoda statyczna)
     int getWspolrzedna_x();
     int getWspolrzedna_y(); //nie mamy metod na modyfikacje statkóW, tworzymy publiczne metody aby dostać się do zmiennych
     Kierunek getKierunek();
