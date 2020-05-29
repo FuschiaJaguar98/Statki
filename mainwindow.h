@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <Plansza.h>
+#include <cstdlib>
+#include<cstdio>
+#include <ctime>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,10 +23,13 @@ private slots:
     void on_pushButton_clicked();
 
 private:
-    Plansza *planszaGraczaJeden;
-    int liczbaStatkow;
+    Plansza* planszaGraczaJeden;
+    Plansza* planszaGraczaDwa;
+    int liczbaStatkowGracza;
+    int liczbaStatkowKomputera;
     Ui::MainWindow *ui;
-    void ustawStatekGracza(int liczbaMasztow);
-
+    void ustawStatekGracza(const int liczbaMasztow);
+    void ustawStatkiKomputera(int liczbaMasztow);
+    void ustawStatkiKopmutera();
 };
 #endif // MAINWINDOW_H

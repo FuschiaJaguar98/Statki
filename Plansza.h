@@ -14,19 +14,41 @@ class PrzyciskPlanszy:public QPushButton{     //musi być wyżej żeby cpp się 
     int pozycja_y;
     Statek* statek;
     bool zajety;
+    bool trafiony;
 
 public:
-    PrzyciskPlanszy(int pozycja_x, int pozycja_y, QWidget* parent) : QPushButton (parent), pozycja_x (pozycja_x),pozycja_y (pozycja_y), zajety(false)    {
+    PrzyciskPlanszy(int pozycja_x, int pozycja_y, QWidget* parent) : QPushButton (parent), pozycja_x (pozycja_x),pozycja_y (pozycja_y), zajety(false), trafiony(false), statek (nullptr)
+
+    {
         connect(this, SIGNAL(clicked()), this, SLOT(przyciskKlikniety()));            //nasz obiekt, akcja, obiekt na którym wywołujemy metodę w tym przypadku ten sam
     }
     //wywoływanie metody do kliknięcia, Qslot, żeby coś się działo
-    Q_SLOT void przyciskKlikniety()
+    Q_SLOT bool przyciskKlikniety()
     {
-        std::cout << pozycja_x<<","<<pozycja_y<< std::endl;
+        if(trafiony == false){
+            trafiony = true;
+            //zaznaczyc jako trafiony na planszy
+
+            this->setStyleSheet("background-color: red");
+            //statek trafiony
+                    if(statek !=nullptr){
+
+                    this->setStyleSheet("background-color: red");
+                    statek->statekTrafiony();
+                    return true;
+            } else {
+
+                this->setStyleSheet("background-color: green");
+                        return false;
+            }
+        }
     }
     void setStatek(Statek* nowyStatek);
     void setZajety(bool zajety);
     bool getZajety();
+    void setTrafiony(bool trafiony);
+    bool getTrafiony();
+
 };
 
 class Plansza{
@@ -44,7 +66,7 @@ private:
     void ustawZajeteWokol(int pozycja_x,int pozycja_y);
 
 public:
-    static const int LICZBA_CZTEROMASZTOWCOW = 1;
+    static const int LICZBA_CZTEROMASZTOWCOW = 1;                   //ominąć słówko const jak będziemy chcieli nadpisać wartości
     static const int LICZBA_TRZYMASZTOWCOW = 2;
     static const int LICZBA_DWUMASZTOWCOW = 3;
     static const int LICZBA_JEDNOMASZTOWCOW = 4;
@@ -52,8 +74,8 @@ public:
     Plansza(QWidget* widget, QGridLayout* layout);  //konstruktor
                                         //zapobiega wyciekowi pamięci
     void dodajStatek(Statek* nowyStatek);
-    bool sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierunek kierunek, int maszty);
-
+    const bool sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierunek kierunek, int maszty);
+    bool strzalKomputera(int wspolrzedna_x, int wspolrzedna_y);
 };
 
 #endif // PLANSZA_H

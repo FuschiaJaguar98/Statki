@@ -60,7 +60,7 @@ void Plansza:: dodajStatek(Statek *nowyStatek){
        }
 
 }
-bool Plansza::sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierunek kierunek, int maszty){
+const bool Plansza::sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierunek kierunek, int maszty){
 
 
     bool moznaWstawicStatek = true;
@@ -68,7 +68,7 @@ bool Plansza::sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierune
     for(int pozycja = 0; pozycja< maszty; pozycja++){
         switch(kierunek){
         case Kierunek::gora: {
-            if (wspolrzedna_x - pozycja<0){
+            if (!(wspolrzedna_x >= 0 && wspolrzedna_x <= Plansza::SZEROKOSC_PLANSZY && wspolrzedna_y >= 0 && wspolrzedna_y <= Plansza::SZEROKOSC_PLANSZY)){
                 moznaWstawicStatek = false;
             } else {
             moznaWstawicStatek = moznaWstawicStatek & !przyciski[wspolrzedna_x - pozycja][wspolrzedna_y]->getZajety();
@@ -76,7 +76,7 @@ bool Plansza::sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierune
         break;
         }
         case Kierunek::lewo:{
-             if (wspolrzedna_y - pozycja<0){
+             if (!(wspolrzedna_x >= 0 && wspolrzedna_x <= Plansza::SZEROKOSC_PLANSZY && wspolrzedna_y >= 0 && wspolrzedna_y <= Plansza::SZEROKOSC_PLANSZY)){
                  moznaWstawicStatek = false;
 
              } else {
@@ -86,14 +86,14 @@ bool Plansza::sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierune
 
         }
         case Kierunek::dol:{
-            if(wspolrzedna_x + pozycja> Plansza::SZEROKOSC_PLANSZY){
+            if(!(wspolrzedna_x >= 0 && wspolrzedna_x <= Plansza::SZEROKOSC_PLANSZY && wspolrzedna_y >= 0 && wspolrzedna_y <= Plansza::SZEROKOSC_PLANSZY)){
                 moznaWstawicStatek = false;
             } else {
             moznaWstawicStatek = moznaWstawicStatek & !przyciski[wspolrzedna_x + pozycja][wspolrzedna_y]->getZajety();}
         break;
         }
         case Kierunek::prawo:{
-            if (wspolrzedna_y + pozycja > Plansza::SZEROKOSC_PLANSZY){
+            if (!(wspolrzedna_x >= 0 && wspolrzedna_x <= Plansza::SZEROKOSC_PLANSZY && wspolrzedna_y >= 0 && wspolrzedna_y <= Plansza::SZEROKOSC_PLANSZY)){
                 moznaWstawicStatek = false;
             } else {
            moznaWstawicStatek = moznaWstawicStatek & !przyciski[wspolrzedna_x][wspolrzedna_y + pozycja]->getZajety();
@@ -111,13 +111,23 @@ void PrzyciskPlanszy:: setStatek(Statek *nowyStatek){
 }
 void PrzyciskPlanszy:: setZajety(bool zajety){
     this->zajety = zajety;}
+
 bool PrzyciskPlanszy::getZajety(){
     return zajety;
 }
+
+
+void PrzyciskPlanszy::setTrafiony(bool trafiony){
+    this->trafiony = trafiony;
+}
+bool PrzyciskPlanszy::getTrafiony(){
+    return trafiony;
+}
+
 void Plansza:: ustawZajeteWokol(int pozycja_x, int pozycja_y) {
     for(int wiersz = pozycja_x - 1; wiersz<= pozycja_x+1; wiersz++){
         for(int kolumna = pozycja_y - 1; kolumna <= pozycja_y + 1; kolumna++){
-            if(wiersz >= 0 && wiersz <+Plansza::SZEROKOSC_PLANSZY && kolumna>=0 &&kolumna<=Plansza::SZEROKOSC_PLANSZY){
+            if(wiersz >= 0 && wiersz <Plansza::SZEROKOSC_PLANSZY && kolumna>=0 &&kolumna<Plansza::SZEROKOSC_PLANSZY){
                 przyciski[wiersz][kolumna]->setZajety(true);
             }
         }
@@ -125,5 +135,11 @@ void Plansza:: ustawZajeteWokol(int pozycja_x, int pozycja_y) {
 }
 
 
+bool Plansza::strzalKomputera(int wspolrzedna_x, int wspolrzedna_y){
+    if (przyciski[wspolrzedna_x][wspolrzedna_y]->getTrafiony()) {                   //sprawdzamy czy dane pole jest już trafione, jeśli tak to strzela jeszcez raz
+        return true;
+    }
 
+    return przyciski[wspolrzedna_x][wspolrzedna_y]->przyciskKlikniety();
+}
 

@@ -94,6 +94,50 @@
      <string>Wstaw</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="podanyKierunek">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>120</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>130</y>
+      <width>47</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Kierunek:</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="plansza2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>150</y>
+      <width>321</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>321</width>
+       <height>351</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="plansza1grid_2"/>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
