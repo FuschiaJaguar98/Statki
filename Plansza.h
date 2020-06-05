@@ -2,10 +2,14 @@
 #define PLANSZA_H
 #include "QPushButton"
 #include "QWidget"
+#include "QObject"
 #include "QGridLayout"
 #include "Statek.h"
 #include <iostream>
+#include <list>
+#include<QApplication>
 
+class Plansza;
 
 class PrzyciskPlanszy:public QPushButton{     //musi być wyżej żeby cpp się nie gubił jak jest niżej i bez nagłówka to się gubi
     Q_OBJECT        //do definicji QSLot
@@ -15,39 +19,24 @@ class PrzyciskPlanszy:public QPushButton{     //musi być wyżej żeby cpp się 
     Statek* statek;
     bool zajety;
     bool trafiony;
+    Plansza *plansza;
 
 public:
-    PrzyciskPlanszy(int pozycja_x, int pozycja_y, QWidget* parent) : QPushButton (parent), pozycja_x (pozycja_x),pozycja_y (pozycja_y), zajety(false), trafiony(false), statek (nullptr)
+    PrzyciskPlanszy(int pozycja_x, int pozycja_y, Plansza *plansza, QWidget* parent) : QPushButton (parent),
+        pozycja_x (pozycja_x),pozycja_y (pozycja_y),plansza(plansza), zajety(false), trafiony(false), statek (nullptr)
 
     {
         connect(this, SIGNAL(clicked()), this, SLOT(przyciskKlikniety()));            //nasz obiekt, akcja, obiekt na którym wywołujemy metodę w tym przypadku ten sam
     }
     //wywoływanie metody do kliknięcia, Qslot, żeby coś się działo
-    Q_SLOT bool przyciskKlikniety()
-    {
-        if(trafiony == false){
-            trafiony = true;
-            //zaznaczyc jako trafiony na planszy
+    Q_SLOT bool przyciskKlikniety();
 
-            this->setStyleSheet("background-color: red");
-            //statek trafiony
-                    if(statek !=nullptr){
-
-                    this->setStyleSheet("background-color: red");
-                    statek->statekTrafiony();
-                    return true;
-            } else {
-
-                this->setStyleSheet("background-color: green");
-                        return false;
-            }
-        }
-    }
     void setStatek(Statek* nowyStatek);
     void setZajety(bool zajety);
     bool getZajety();
     void setTrafiony(bool trafiony);
     bool getTrafiony();
+    bool strzal();
 
 };
 
@@ -61,6 +50,8 @@ private:
     PrzyciskPlanszy* przyciski [10][10]; //tworzenie planszy dla jednego gracza
     QWidget* widget;
     QGridLayout* layout;
+    Plansza *drugaPlansza;
+    std::list<Statek> statki;
 
     void stworzPrzyciski();
     void ustawZajeteWokol(int pozycja_x,int pozycja_y);
@@ -71,11 +62,17 @@ public:
     static const int LICZBA_DWUMASZTOWCOW = 3;
     static const int LICZBA_JEDNOMASZTOWCOW = 4;
 
-    Plansza(QWidget* widget, QGridLayout* layout);  //konstruktor
+    Plansza(QWidget* widget, QGridLayout* layout, Plansza*drugaPlansza);  //konstruktor
                                         //zapobiega wyciekowi pamięci
     void dodajStatek(Statek* nowyStatek);
     const bool sprobujWstawicStatek(int wspolrzedna_x, int wspolrzedna_y, Kierunek kierunek, int maszty);
     bool strzalKomputera(int wspolrzedna_x, int wspolrzedna_y);
+    void setDrugaPlansza (Plansza *drugaPlansza);
+    Plansza * getDrugaPlansza();
+    void turaKomputera();
+    void dodajStatekDoListy(Statek &statek);                   //przekazujemy parametr jako referencję, możemy coś na nim robić na tej zmiennej, będzie to widoczne na drugiej klasie, bez & będzie widać tylko to co wcześniej zrobilismy
+    void usunZatopioneStatki();
+    bool brakStatkow();
 };
 
 #endif // PLANSZA_H

@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Plansza.h"
 
@@ -9,8 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);                  //ui - dostęp do rzeczy z formularza
     liczbaStatkowGracza = 0;
     liczbaStatkowKomputera = 0;
-    planszaGraczaJeden = new Plansza(ui->plansza1, ui->plansza1grid);
-    planszaGraczaDwa = new Plansza(ui->plansza2, ui->plansza1grid_2);
+    planszaGraczaJeden = new Plansza (ui->plansza1, ui->plansza1grid,nullptr);          //wskaźnik wskazuje na nic bo nullptr, żadnego innego obiektu innego nie mamy dlatego tak trzeba zrobić
+    planszaGraczaDwa = new Plansza(ui->plansza2, ui->plansza1grid_2, planszaGraczaJeden);
+    planszaGraczaJeden->setDrugaPlansza(planszaGraczaDwa);                              //tworzymy plansze gracza jeden i ma wskaźnik na drugą plansze, na początku plansza gracza jeden na nic wskazuje, a potem plansza gracza jeden wskazuje na plansze gracza dwa, ustawiamy drugie pole na plansze gracze dw, żeby nie wskazywał na nullptr aby móc wywoływać potem inne metody
     srand( time( NULL ) );
 }
 
@@ -34,8 +35,10 @@ void MainWindow:: ustawStatekGracza(int liczbaMasztow)
     }
 
 
-        Statek * nowyStatek = new Statek(wspolrzedna_x,wspolrzedna_y, kierunek,liczbaMasztow);
+
         if (planszaGraczaJeden->sprobujWstawicStatek(wspolrzedna_x, wspolrzedna_y, kierunek, liczbaMasztow)){
+            Statek * nowyStatek = new Statek(wspolrzedna_x, wspolrzedna_y, kierunek, liczbaMasztow);
+            planszaGraczaJeden->dodajStatekDoListy(*nowyStatek);                        //przekazujemy to na co wskazuje wskaźnik
             planszaGraczaJeden->dodajStatek(nowyStatek);
             liczbaStatkowGracza++;
 
@@ -49,8 +52,10 @@ void MainWindow::ustawStatkiKomputera(int liczbaMasztow){                   //lo
     Kierunek kierunek = Kierunek(rand()%4);
 
     if(planszaGraczaDwa->sprobujWstawicStatek(wspolrzedna_x, wspolrzedna_y, kierunek, liczbaMasztow)){
-            planszaGraczaDwa->dodajStatek(new Statek(wspolrzedna_x,wspolrzedna_y,kierunek,liczbaMasztow));
-            liczbaStatkowKomputera++;
+        Statek * nowyStatek = new Statek(wspolrzedna_x, wspolrzedna_y, kierunek, liczbaMasztow);
+        planszaGraczaDwa->dodajStatekDoListy(*nowyStatek);
+        planszaGraczaDwa->dodajStatek(nowyStatek);
+        liczbaStatkowKomputera++;
 }
 
 }
@@ -78,7 +83,7 @@ void MainWindow::ustawStatkiKopmutera()
 
 void MainWindow::on_pushButton_clicked()
 {
-    ustawStatkiKopmutera();
+
     if (liczbaStatkowGracza < Plansza::LICZBA_CZTEROMASZTOWCOW){
         ustawStatekGracza (4);
     } else if (liczbaStatkowGracza <Plansza::LICZBA_CZTEROMASZTOWCOW + Plansza::LICZBA_TRZYMASZTOWCOW){
