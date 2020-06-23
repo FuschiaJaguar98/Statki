@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);                  //ui - dostęp do rzeczy z formularza
     liczbaStatkowGracza = 0;
     liczbaStatkowKomputera = 0;
-    planszaGraczaJeden = new Plansza (ui->plansza1, ui->plansza1grid,nullptr);          //wskaźnik wskazuje na nic bo nullptr, żadnego innego obiektu innego nie mamy dlatego tak trzeba zrobić
-    planszaGraczaDwa = new Plansza(ui->plansza2, ui->plansza1grid_2, planszaGraczaJeden);
+    planszaGraczaJeden = new Plansza (ui->plansza1, ui->plansza1grid,nullptr,ui->komunikatWygranej, true);          //wskaźnik wskazuje na nic bo nullptr, żadnego innego obiektu innego nie mamy dlatego tak trzeba zrobić, plansza należy do gracza -> true, jeżeli na nią klikamy to nie powinno się nic dziać
+    planszaGraczaDwa = new Plansza(ui->plansza2, ui->plansza1grid_2, planszaGraczaJeden, ui->komunikatWygranej, false);
     planszaGraczaJeden->setDrugaPlansza(planszaGraczaDwa);                              //tworzymy plansze gracza jeden i ma wskaźnik na drugą plansze, na początku plansza gracza jeden na nic wskazuje, a potem plansza gracza jeden wskazuje na plansze gracza dwa, ustawiamy drugie pole na plansze gracze dw, żeby nie wskazywał na nullptr aby móc wywoływać potem inne metody
     srand( time( NULL ) );
 }
@@ -99,6 +99,7 @@ void MainWindow::on_pushButton_clicked()
     }
      if (liczbaStatkowGracza== Plansza::LICZBA_DWUMASZTOWCOW + Plansza::LICZBA_TRZYMASZTOWCOW + Plansza::LICZBA_JEDNOMASZTOWCOW + Plansza::LICZBA_CZTEROMASZTOWCOW){      //jedno równa się, czy dana operacja się uda
         ustawStatkiKopmutera();
+        Plansza::graWToku = true;                               //po ustawieniu statków gra się zaczyna
          /*while(1){
              //strzalgracza
          while(planszaGraczaJeden->strzalKomputera(rand() % 2, rand() % 2));

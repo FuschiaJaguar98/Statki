@@ -6,8 +6,6 @@ Statek::Statek( int wspolrzedna_x, int wspolrzedna_y,
     //, a w nawiasie sama zmienna podawana jako parametr, zmienne który mają być przypisane wartości mają być na końcu
 
 }
-Maszt::Maszt(int wspolrzedna_x, int wspolrzedna_y):wspolrzedna_x(wspolrzedna_x),
-wspolrzedna_y(wspolrzedna_y), trafiony(false){}
 
 int Statek::getMaszty(){
     return maszty;

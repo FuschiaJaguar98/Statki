@@ -8,16 +8,7 @@ enum class Kierunek{                //enum class każdy element ma przypisany do
     prawo
 };
 
-class Maszt{
-public:
-    Maszt(int wspolrzedna_x, int wspolrzedna_y);
-private:
-    bool trafiony;
 
-     int wspolrzedna_x;
-     int wspolrzedna_y;
-
-};
 
 class Statek {
 public:
